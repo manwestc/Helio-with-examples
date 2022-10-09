@@ -1,0 +1,24 @@
+version: '2'
+services:
+  helio-rest:
+    image: acimmino/helio-rest:latest
+    volumes: 
+      - type: volume
+        source: helio-db
+        target: /helio/app
+        volume: {}
+      - ./default-components.json:/app/default-components.json
+      - ./project.json:/app/project.json
+    ports:
+      - "4567:4567"
+
+  frontend:
+    image: emiliocrespoperan/helio-frontend:latest
+    depends_on:
+      - helio-rest
+    ports:
+      - "4201:80"
+
+volumes:
+  helio-db:
+    name: helio-db
